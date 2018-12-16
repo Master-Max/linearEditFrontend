@@ -31,6 +31,10 @@
   }
 }
 
+.hidden {
+  display: none;
+}
+
 #monitors {
   background-color: #2C2C2C;
   border-style: solid;
