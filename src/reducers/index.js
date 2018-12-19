@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
-import testReducer from './testReducer';
+import playerClockReducer from './playerClockReducer'
+import playerReducer from './playerReducer'
+import recorderReducer from './recorderReducer'
 
 export default combineReducers({
-  tests: testReducer
+  playerClock: playerClockReducer,
+  player: playerReducer,
+  recorder: recorderReducer,
 });

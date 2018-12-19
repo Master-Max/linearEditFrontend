@@ -18,6 +18,10 @@
   padding-right: 64px;
 }
 
+video {
+  margin: 8px;
+}
+
 canvas {
   background-color: #FFFFFF;
   margin: 8px;

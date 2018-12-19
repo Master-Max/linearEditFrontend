@@ -1,60 +1,50 @@
 import React, { Component } from 'react';
-import './Editor.css';
-import CanvasComponent from './CanvasComponent.js'
+import '../assets/css/Editor.css';
+import { connect } from 'react-redux';
+import { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate } from '../actions'
 
 class EditorComponent extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      playerVideoSrc: "http://localhost:4001/video",
-      ready: false,
-      videoPlaying: false,
-      pcmTime: null
-    }
-  }
 
   handleClick = (button) => {
     console.log(button)
     switch (button) {
       case 'PC-PLAY':
-        this.setState({videoPlaying: true})
+        this.props.updatePlayerIsPlaying(true);
+        this.props.updatePlayerPlayRate(1);
         break;
       case 'PC-STILL':
-        this.setState({videoPlaying: false})
-        break;
-      case 'PC-LOAD':
-        const newPlayerSource = prompt('Enter Video URL: ');
-        if (!!newPlayerSource && newPlayerSource != "") {
-          this.setState({playerVideoSrc: newPlayerSource})
-        }
+        this.props.updatePlayerIsPlaying(false);
         break;
       case 'PC-REWIND':
-        const pcm = document.getElementById("pc-monitor");
-
+        this.props.updatePlayerIsPlaying(true);
+        this.props.updatePlayerPlayRate(-4);
         break;
       case 'PC-FASTFORWARD':
+        this.props.updatePlayerIsPlaying(true);
+        this.props.updatePlayerPlayRate(4);
+        break;
+      case 'PC-LOAD':
+        this.props.updatePlayerIsPlaying(false);
+        const source = window.prompt("Enter New URL")
+        if (!!source){
+          console.log('New URL: ', source)
+          this.props.updatePlayerSource(source);
+        } else {
+          window.alert("Invalid URL")
+        }
+        break;
+      case 'PC-EJECT':
+        this.props.updatePlayerIsPlaying(false);
+        this.props.updatePlayerSource(null);
+        break;
+      case 'PC-DIAL-BACK':
+        break;
+      case 'PC-DIAL-FORWARD':
         break;
       default:
         console.log('Uh Oh...');
     }
   }
-
-  setPCMTime = (pcmTime) => {
-    this.setState({pcmTime})
-  }
-
-  formatTime = (time) => {
-    let fTime = new Date(null)
-    fTime.setSeconds(time)
-    return (fTime.toISOString().substr(11, 8))
-  }
-
-  monitorRack = () => (
-    <div id="monitors">
-      <CanvasComponent width={640} height={360} src={this.state.playerVideoSrc} play={this.state.videoPlaying} setTime={this.setPCMTime}/>
-      <canvas ref="recorder-monitor" width={640} height={360} />
-    </div>
-  )
 
   playerControls = () => (
     <div id="player">
@@ -63,7 +53,7 @@ class EditorComponent extends Component {
         <b className="light">IN</b>
         <b className="light">OUT</b>
       </div>
-      <div className="clock">{this.formatTime(this.state.pcmTime)}</div>
+      {/* CLOCK USED TO GO HERE */}
       <div className="center-div">
         <div className="row">
           <b onClick={() => this.handleClick('PC-LOAD')} className="switch blue-button">LOAD</b>
@@ -145,7 +135,7 @@ class EditorComponent extends Component {
         <b className="light">IN</b>
         <b className="light">OUT</b>
       </div>
-      <div className="clock">00:00:00</div>
+      {/* CLOCK USED TO GO HERE */}
       <div className="center-div">
         <div className="row">
           <b onClick={() => this.handleClick('RC-RECORD')} className="switch red-button">REC</b>
@@ -176,18 +166,30 @@ class EditorComponent extends Component {
 
   render() {
     return (
-      <div className='Editor'>
-        {this.monitorRack()}
-        <div id="controls">
-          <div className="flexy">
-            {this.playerControls()}
-            {this.editControls()}
-            {this.recorderControls()}
-          </div>
-        </div>
-      </div>
+      <>
+        {this.playerControls()}
+      </>
     );
   }
 }
 
-export default EditorComponent
+export default connect(null, { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate })(EditorComponent);
+
+
+/********************************************************
+
+NOTES:
+
+I may want to move the clock into its own component
+after all the other parts of the control board are just
+buttons basically, the clock is the only part that's
+being constantly updated.
+
+If I don't I think that the entire EditorComponent will
+be updated every time the clock is updated...
+
+Which might not be a bad thing but it doesn't really
+sound like a good thing so... yeah...
+
+
+********************************************************/

@@ -5,7 +5,7 @@ function rect(props) {
     ctx.fillRect(x, y, width, height);
 }
 
-class CanvasComponent extends Component {
+class MonitorComponent extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -87,7 +87,7 @@ class CanvasComponent extends Component {
   }
 }
 
-export default CanvasComponent
+export default MonitorComponent
 
 
 //<video ref="video" src={this.props.src} controls/>
