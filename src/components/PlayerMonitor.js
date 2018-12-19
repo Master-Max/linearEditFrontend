@@ -9,7 +9,6 @@ class PlayerMonitor extends Component {
       console.log("Stopping Draw")
       return false;
     }
-    this.props.updatePlayerClock(this.v.currentTime)
     setTimeout(this.draw,20);
   }
 
@@ -25,7 +24,6 @@ class PlayerMonitor extends Component {
       return false;
     } else {
       this.v.currentTime = nextTime;
-      this.props.updatePlayerClock(this.v.currentTime);
       setTimeout(this.reverse,20);
     }
   }
@@ -72,11 +70,17 @@ class PlayerMonitor extends Component {
 
   }
 
+  // renderVideo = () => {
+  //   if (!this.props.isLoading) {
+  //     return <video ref="video" src={this.props.source} width={640} height={360} />
+  //   } else {
+  //     return <div className="ph-video" />
+  //   }
+  // }
+
   render() {
     return (
-      <>
-        <video ref="video" className="" src={this.props.source} width={640} height={360} />
-      </>
+      <video ref="video" src={this.props.source} width={640} height={360} />
     );
   }
 }
@@ -89,6 +93,7 @@ function mapStateToProps(state) {
     playRate: state.player.playRate,
     stepCount: state.player.stepCount,
     stepRate: state.player.stepRate,
+    isLoading: state.player.isLoading,
   }
 }
 

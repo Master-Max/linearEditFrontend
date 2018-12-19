@@ -1,6 +1,7 @@
 import { UPDATE_PLAYER_CLOCK } from './types';
 import { UPDATE_PLAYER_SOURCE, UPDATE_PLAYER_ISPLAYING, UPDATE_PLAYER_PLAYRATE, UPDATE_PLAYER_JOGSTEP } from './types';
 import { UPDATE_RECORDER_CLOCK } from './types';
+import VideoAdapter from '../apis/VideoAdapter'
 
 // PLAYER ACTIONS
 export function updatePlayerClock( time ){
@@ -38,7 +39,23 @@ export function updatePlayerJogStep( step ) {
   }
 }
 
+export function postVideo(url) { // May Need to rename this
+  return (dispatch) => {
+    console.log('postVideo')
 
+    dispatch({ type: 'POSTING_VIDEO' })
+    VideoAdapter.postVideo(url)
+      .then(video => {
+        console.log('Video: ', video);
+        dispatch(updatePlayerSource(video.stream_url));
+        dispatch({ type: 'POSTED_VIDEO' })
+      })
+  }
+}
+
+export function assembleVideo() {
+  
+}
 /// RECORDER ACTIONS
 export function updateRecorderClock( time ){
   return {

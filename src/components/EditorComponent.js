@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 import { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate, updatePlayerJogStep } from '../actions'
 import PlayerClock from './PlayerClock';
 import RecorderClock from './RecorderClock';
+import * as actions from '../actions'
 
 class EditorComponent extends Component {
+
+  postVideo = (url) => {
+    this.props.postVideo(url);
+  }
 
   handleClick = (button) => {
     console.log(button)
@@ -32,7 +37,7 @@ class EditorComponent extends Component {
         const source = window.prompt("Enter New URL")
         if (!!source){
           console.log('New URL: ', source)
-          this.props.updatePlayerSource(source);
+          this.postVideo(source);
         } else {
           window.alert("Invalid URL")
         }
@@ -181,7 +186,7 @@ class EditorComponent extends Component {
   }
 }
 
-export default connect(null, { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate, updatePlayerJogStep })(EditorComponent);
+export default connect(null, actions)(EditorComponent);
 
 
 /********************************************************
