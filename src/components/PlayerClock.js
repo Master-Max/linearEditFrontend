@@ -12,7 +12,7 @@ function formatTime( time = 0 ){
 
   r.ms = (time % 1).toFixed(3).substring(2);
 
-  let t = Math.round(time)
+  let t = Math.trunc(time)
 
   if (t < 60) {
     r.s = `${t < 10 ? `0${t}` : `${t}`}`;

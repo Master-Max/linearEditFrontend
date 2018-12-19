@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import '../assets/css/Editor.css';
 import { connect } from 'react-redux';
-import { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate } from '../actions'
+import { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate, updatePlayerJogStep } from '../actions'
+import PlayerClock from './PlayerClock';
+import RecorderClock from './RecorderClock';
 
 class EditorComponent extends Component {
 
@@ -11,9 +13,11 @@ class EditorComponent extends Component {
       case 'PC-PLAY':
         this.props.updatePlayerIsPlaying(true);
         this.props.updatePlayerPlayRate(1);
+        this.props.updatePlayerJogStep(0);
         break;
       case 'PC-STILL':
         this.props.updatePlayerIsPlaying(false);
+        this.props.updatePlayerJogStep(0);
         break;
       case 'PC-REWIND':
         this.props.updatePlayerIsPlaying(true);
@@ -38,8 +42,10 @@ class EditorComponent extends Component {
         this.props.updatePlayerSource(null);
         break;
       case 'PC-DIAL-BACK':
+        this.props.updatePlayerJogStep(-0.1);
         break;
       case 'PC-DIAL-FORWARD':
+        this.props.updatePlayerJogStep(0.1);
         break;
       default:
         console.log('Uh Oh...');
@@ -53,7 +59,7 @@ class EditorComponent extends Component {
         <b className="light">IN</b>
         <b className="light">OUT</b>
       </div>
-      {/* CLOCK USED TO GO HERE */}
+      <PlayerClock />
       <div className="center-div">
         <div className="row">
           <b onClick={() => this.handleClick('PC-LOAD')} className="switch blue-button">LOAD</b>
@@ -135,7 +141,7 @@ class EditorComponent extends Component {
         <b className="light">IN</b>
         <b className="light">OUT</b>
       </div>
-      {/* CLOCK USED TO GO HERE */}
+      <RecorderClock />
       <div className="center-div">
         <div className="row">
           <b onClick={() => this.handleClick('RC-RECORD')} className="switch red-button">REC</b>
@@ -168,12 +174,14 @@ class EditorComponent extends Component {
     return (
       <>
         {this.playerControls()}
+        {this.editControls()}
+        {this.recorderControls()}
       </>
     );
   }
 }
 
-export default connect(null, { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate })(EditorComponent);
+export default connect(null, { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate, updatePlayerJogStep })(EditorComponent);
 
 
 /********************************************************

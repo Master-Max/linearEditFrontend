@@ -5,7 +5,8 @@ import EditorComponent from './EditorComponent';
 // import ClockComponent from './ClockComponent';
 
 import PlayerMonitor from './PlayerMonitor';
-import PlayerClock from './PlayerClock';
+import RecorderMonitor from './RecorderMonitor';
+// import PlayerClock from './PlayerClock';
 
 // import TestComponent from './TestComponent';
 
@@ -15,9 +16,15 @@ class App extends Component {
   render(){
     return(
       <div className='Editor'>
-        <PlayerMonitor />
-        <PlayerClock />
-        <EditorComponent />
+        <div id="monitors">
+          <PlayerMonitor />
+          <RecorderMonitor />
+        </div>
+        <div id="controls">
+          <div className="flexy">
+            <EditorComponent />
+          </div>
+        </div>
       </div>
     )
   }

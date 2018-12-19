@@ -1,9 +1,11 @@
-import { UPDATE_PLAYER_SOURCE, UPDATE_PLAYER_ISPLAYING, UPDATE_PLAYER_PLAYRATE } from '../actions/types';
+import { UPDATE_PLAYER_SOURCE, UPDATE_PLAYER_ISPLAYING, UPDATE_PLAYER_PLAYRATE, UPDATE_PLAYER_JOGSTEP } from '../actions/types';
 
 const initialState = {
   source: 'http://localhost:4001/video',
   isPlaying: false,
   playRate: 1,
+  stepCount: 0,
+  stepRate: 0,
 }
 
 export default function playerReducer(state = initialState, action) {
@@ -14,6 +16,8 @@ export default function playerReducer(state = initialState, action) {
       return {...state, isPlaying: action.payload}
     case UPDATE_PLAYER_PLAYRATE:
       return {...state, playRate: action.payload}
+    case UPDATE_PLAYER_JOGSTEP:
+      return {...state, stepCount: state.stepCount + 1, stepRate: action.payload}
     default:
       return state;
   }
