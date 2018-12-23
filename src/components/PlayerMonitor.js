@@ -9,6 +9,7 @@ class PlayerMonitor extends Component {
       console.log("Stopping Draw")
       return false;
     }
+    // this.props.updatePlayerClock(this.v.currentTime);
     setTimeout(this.draw,20);
   }
 
@@ -24,6 +25,7 @@ class PlayerMonitor extends Component {
       return false;
     } else {
       this.v.currentTime = nextTime;
+      // this.props.updatePlayerClock(this.v.currentTime);
       setTimeout(this.reverse,20);
     }
   }
@@ -33,15 +35,22 @@ class PlayerMonitor extends Component {
     if(nextFrame > 0 || this.v.ended){
       // console.log('Stepping to, ', nextFrame);
       this.v.currentTime = nextFrame;
-      this.props.updatePlayerClock(this.v.currentTime);
+      // this.props.updatePlayerClock(this.v.currentTime);
     }
   }
 
   componentDidMount() {
     this.v = this.refs.video
+
+    this.v.addEventListener("timeupdate", () => {this.props.updatePlayerClock(this.v.currentTime)})
+    // ^ This works
   }
 
   componentDidUpdate() {
+    // console.log(this.v.src)
+    // if(this.v.src == this.props.source){
+    //   this.v = this.refs.video
+    // }
     this.updateMonitor();
   }
 
@@ -78,9 +87,15 @@ class PlayerMonitor extends Component {
   //   }
   // }
 
+  // render() {
+  //   return (
+  //     <>{this.renderVideo()}</>
+  //   );
+  // }
+
   render() {
     return (
-      <video ref="video" src={this.props.source} width={640} height={360} />
+      <video id="pm" ref="video" src={this.props.source} width={640} height={360} />
     );
   }
 }

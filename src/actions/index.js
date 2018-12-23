@@ -54,7 +54,7 @@ export function postVideo(url) { // May Need to rename this
 }
 
 export function assembleVideo() {
-  
+
 }
 /// RECORDER ACTIONS
 export function updateRecorderClock( time ){
@@ -63,3 +63,15 @@ export function updateRecorderClock( time ){
     payload: time
   }
 }
+
+ // TODO:
+
+ /*
+
+So like i think i need to move the controlls i have set up for the edit controller
+into there instead of using document.getElementById
+
+Id just need functions in the player monitor compoenent that can be called.
+Like how I set up the VideoAdapter on line 47
+
+ */

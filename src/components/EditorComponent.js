@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import '../assets/css/Editor.css';
 import { connect } from 'react-redux';
-import { updatePlayerSource, updatePlayerIsPlaying, updatePlayerPlayRate, updatePlayerJogStep } from '../actions'
 import PlayerClock from './PlayerClock';
 import RecorderClock from './RecorderClock';
 import * as actions from '../actions'
 
 class EditorComponent extends Component {
+
+  state = {
+    entry: 'none',
+    pi: null,
+    po: null,
+    ri: null,
+    ro: null,
+  }
 
   postVideo = (url) => {
     this.props.postVideo(url);
@@ -14,6 +21,7 @@ class EditorComponent extends Component {
 
   handleClick = (button) => {
     console.log(button)
+    // console.log(this.state)
     switch (button) {
       case 'PC-PLAY':
         this.props.updatePlayerIsPlaying(true);
@@ -52,6 +60,98 @@ class EditorComponent extends Component {
       case 'PC-DIAL-FORWARD':
         this.props.updatePlayerJogStep(0.1);
         break;
+      case 'EC-TRIM-MINUS':
+        switch (this.state.entry) {
+          case 'pi':
+            this.setState({pi: this.state.pi - 0.017})
+            break;
+          case 'po':
+            this.setState({po: this.state.po - 0.017})
+            break;
+          case 'ri':
+
+            break;
+          case 'po':
+
+            break;
+          default:
+
+        }
+        break;
+      case 'EC-TRIM-PLUS':
+        switch (this.state.entry) {
+          case 'pi':
+            this.setState({pi: this.state.pi + 0.017})
+            break;
+          case 'po':
+            this.setState({po: this.state.po + 0.017})
+            break;
+          case 'ri':
+
+            break;
+          case 'po':
+
+            break;
+          default:
+
+        }
+        break;
+      case 'EC-PLAYER-IN':
+        if (this.state.entry === 'pi'){
+          this.setState({entry: 'none'})
+        } else {
+          this.setState({entry: 'pi'})
+        }
+        break;
+      case 'EC-PLAYER-OUT':
+        if (this.state.entry === 'po'){
+          this.setState({entry: 'none'})
+        } else {
+          this.setState({entry: 'po'})
+        }
+        break;
+      case 'EC-GOTO':
+        this.setState({entry: 'none'})
+        switch (this.state.entry) {
+          case 'pi':
+            document.getElementById('pm').currentTime = this.state.pi
+            break;
+          case 'po':
+            document.getElementById('pm').currentTime = this.state.po
+            break;
+          case 'ri':
+
+            break;
+          case 'po':
+
+            break;
+          default:
+
+        }
+        break;
+      case 'EC-RECORDER-IN':
+        break;
+      case 'EC-RECORDER-OUT':
+        break;
+      case 'EC-ENTRY':
+        this.setState({entry: 'none'})
+        switch (this.state.entry){
+          case 'pi':
+            this.setState({pi: this.props.ptime})
+            break;
+          case 'po':
+            this.setState({po: this.props.ptime})
+            break;
+          case 'ri':
+            break;
+          case 'ro':
+            break;
+        }
+        break;
+      case 'EC-PREVIEW':
+        break;
+      case 'EC-AUTO-EDIT':
+        break;
       default:
         console.log('Uh Oh...');
     }
@@ -61,8 +161,8 @@ class EditorComponent extends Component {
     <div id="player">
       <p>PLAYER</p>
       <div className="row right-justify">
-        <b className="light">IN</b>
-        <b className="light">OUT</b>
+        {this.state.entry === 'pi' ? <b className="light on">IN</b> : <b className={this.state.pi != null ? "light lock" : "light"}>IN</b>}
+        {this.state.entry === 'po' ? <b className="light on">OUT</b> : <b className={this.state.po != null ? "light lock" : "light"}>OUT</b>}
       </div>
       <PlayerClock />
       <div className="center-div">
@@ -186,7 +286,13 @@ class EditorComponent extends Component {
   }
 }
 
-export default connect(null, actions)(EditorComponent);
+function mapStateToProps(state) {
+  return {
+    ptime: state.playerClock.time
+  }
+}
+
+export default connect(mapStateToProps, actions)(EditorComponent);
 
 
 /********************************************************
