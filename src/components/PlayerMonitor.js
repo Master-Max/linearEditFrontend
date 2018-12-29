@@ -95,7 +95,7 @@ class PlayerMonitor extends Component {
 
   render() {
     return (
-      <video id="pm" ref="video" src={this.props.source} width={640} height={360} />
+      <video id="pm" ref="video" src={this.props.stream} width={640} height={360} />
     );
   }
 }
@@ -104,6 +104,7 @@ function mapStateToProps(state) {
   return {
     time: state.player.time,
     source: state.player.source,
+    stream: state.player.stream,
     isPlaying: state.player.isPlaying,
     playRate: state.player.playRate,
     stepCount: state.player.stepCount,

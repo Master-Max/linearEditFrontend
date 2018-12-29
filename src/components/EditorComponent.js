@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PlayerClock from './PlayerClock';
 import RecorderClock from './RecorderClock';
 import * as actions from '../actions'
+import Clip from '../clip.js'
 
 class EditorComponent extends Component {
 
@@ -149,8 +150,54 @@ class EditorComponent extends Component {
         }
         break;
       case 'EC-PREVIEW':
+        if (this.state.pi !== null, this.state.po !== null){
+          if (this.props.rSources.length === 0){
+            const dTime = this.state.po - this.state.pi;
+            // console.log('pS: ', this.props.pSource);
+            let clip = {
+              sourceURL: this.props.pSource,
+              streamURL: this.props.pStream,
+              playerIN: this.state.pi,
+              playerOUT: this.state.po,
+              recorderIN: 0,
+              recorderOUT: dTime,
+            }
+            const c = new Clip(clip);
+            // this.props.addRecorderSource(c);
+            this.props.updatePreviewClip(c);
+          }
+        }
         break;
       case 'EC-AUTO-EDIT':
+        break;
+      case 'RC-PLAY':
+        this.props.updateRecorderIsPlaying(true);
+        this.props.updateRecorderPlayRate(1);
+        this.props.updateRecorderJogStep(0);
+        break;
+      case 'RC-STILL':
+        this.props.updateRecorderIsPlaying(false);
+        this.props.updateRecorderJogStep(0);
+        break;
+      case 'RC-REWIND':
+        this.props.updateRecorderIsPlaying(true);
+        this.props.updateRecorderPlayRate(-4);
+        break;
+      case 'RC-FASTFORWARD':
+        this.props.updateRecorderIsPlaying(true);
+        this.props.updateRecorderPlayRate(4);
+        break;
+      case 'RC-RECORD':
+        console.log('RC RECORD NOT BUILD');
+        break;
+      case 'RC-EXPORT':
+        console.log('RC EXPORT NOT BUILD');
+        break;
+      case 'RC-DIAL-BACK':
+        this.props.updateRecorderJogStep(-0.1);
+        break;
+      case 'RC-DIAL-FORWARD':
+        this.props.updateRecorderJogStep(0.1);
         break;
       default:
         console.log('Uh Oh...');
@@ -288,7 +335,11 @@ class EditorComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    ptime: state.playerClock.time
+    ptime: state.playerClock.time,
+    pSource: state.player.source,
+    pStream: state.player.stream,
+    rtime: state.recorderClock.time,
+    rSources: state.recorder.sources,
   }
 }
 

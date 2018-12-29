@@ -1,7 +1,16 @@
-import { UPDATE_PLAYER_SOURCE, UPDATE_PLAYER_ISPLAYING, UPDATE_PLAYER_PLAYRATE, UPDATE_PLAYER_JOGSTEP } from '../actions/types';
+import {
+  UPDATE_PLAYER_SOURCE,
+  UPDATE_PLAYER_STREAM,
+  UPDATE_PLAYER_ISPLAYING,
+  UPDATE_PLAYER_PLAYRATE,
+  UPDATE_PLAYER_JOGSTEP
+} from '../actions/types';
+
+// const ts = 'http://localhost:4001'
 
 const initialState = {
   source: null,
+  stream: null,
   isLoading: false,
   isPlaying: false,
   playRate: 1,
@@ -13,6 +22,8 @@ export default function playerReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_PLAYER_SOURCE: // This will be async
       return {...state, source: action.payload}
+    case UPDATE_PLAYER_STREAM:
+      return {...state, stream: action.payload}
     case "POSTING_VIDEO":
       return {...state, isLoading: true}
     case "POSTED_VIDEO":
