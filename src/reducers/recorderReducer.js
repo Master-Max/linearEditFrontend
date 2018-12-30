@@ -18,13 +18,14 @@ import {
     recorderIN: 0,
     recorderOUT: 300
   }
-
 */
 
 const initialState = {
-  sources: [],
+  sources: [], // An Unsorted Array of Clips
   currentSource: null,
+  lastAddedClip: null,
   previewClip: null,
+  clipCount: 0,
   isPlaying: false,
   isLoaded: false,
   playRate: 1,
@@ -35,9 +36,14 @@ const initialState = {
 export default function recorderReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_RECORDER_SOURCE:
-      const newSources = state.sources.splice();
-      newSources.push(action.payload)
-      return {...state, sources: newSources}
+      const newSources = [];
+      newSources.push(...state.sources, action.payload)
+      return {
+        ...state,
+        clipCount: state.clipCount + 1,
+        sources: newSources,
+        lastAddedClip: action.payload
+      }
     case UPDATE_RECORDER_SOURCE:
       return {...state, currentSource: action.payload}
     case UPDATE_RECORDER_ISLOADED:

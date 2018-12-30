@@ -15,17 +15,20 @@ class PlayerMonitor extends Component {
 
   forward = () => {
     this.v.play()
-    this.draw(this.v,this.ctx,640,360);
+    this.draw();
   }
 
   reverse = () => {
     const nextTime = this.v.currentTime - (0.017 * Math.abs(this.props.playRate));
-    if(this.v.currentTime - nextTime <= 0 || this.v.currentTime === 0 || !this.props.isPlaying || this.props.playRate > 0){
+    if(!this.props.isPlaying || this.props.playRate > 0){
+      console.log("Stopping Reverse");
+      return false;
+    } else if(nextTime <= 0){
+      this.v.currentTime = 0;
       console.log("Stopping Reverse");
       return false;
     } else {
       this.v.currentTime = nextTime;
-      // this.props.updatePlayerClock(this.v.currentTime);
       setTimeout(this.reverse,20);
     }
   }
@@ -39,23 +42,7 @@ class PlayerMonitor extends Component {
     }
   }
 
-  componentDidMount() {
-    this.v = this.refs.video
-
-    this.v.addEventListener("timeupdate", () => {this.props.updatePlayerClock(this.v.currentTime)})
-    // ^ This works
-  }
-
-  componentDidUpdate() {
-    // console.log(this.v.src)
-    // if(this.v.src == this.props.source){
-    //   this.v = this.refs.video
-    // }
-    this.updateMonitor();
-  }
-
-  updateMonitor() {
-    console.log("updoot")
+  controlLogic = () => { // Play, Pause, FF, REW, and Jog
     if(this.props.isPlaying) {
       if(this.props.playRate === 1) {
         this.v.playbackRate = this.props.playRate;
@@ -76,6 +63,33 @@ class PlayerMonitor extends Component {
         this.step(this.props.stepRate);
       }
     }
+  }
+
+  clog = (text) => {
+    console.log(`%c${text}`, 'color: purple')
+  }
+
+  componentDidMount() {
+    this.v = this.refs.video
+
+    this.v.addEventListener("timeupdate", () => {this.props.updatePlayerClock(this.v.currentTime)})
+    // ^ This works
+  }
+
+  componentDidUpdate() {
+    // console.log(this.v.src)
+    // if(this.v.src == this.props.source){
+    //   this.v = this.refs.video
+    // }
+    this.updateMonitor();
+  }
+
+  updateMonitor() {
+    this.clog('updoot')
+
+    if(this.props.stream !== null){
+      this.controlLogic()
+    } else { this.clog('ERR: no video loaded')}
 
   }
 

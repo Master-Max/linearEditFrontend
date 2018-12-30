@@ -7,6 +7,7 @@ class Clip {
       this.playerOUT = args.playerOUT;
       this.recorderIN = args.recorderIN;
       this.recorderOUT = args.recorderOUT;
+      this.playTime = args.playerOUT - args.playerIN;
     }
   }
 }

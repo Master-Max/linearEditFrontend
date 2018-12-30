@@ -21,7 +21,19 @@ class EditorComponent extends Component {
   }
 
   handleClick = (button) => {
-    console.log(button)
+    // console.log(button)
+    if(button.includes('PC')){
+      console.log(`%c${button}`, 'background: purple; color: white')
+    }
+    else if(button.includes('EC')) {
+      console.log(`%c${button}`, 'background: blue; color: white')
+    }
+    else if(button.includes('RC')){
+      console.log(`%c${button}`, 'background: red; color: white')
+    }
+    else{
+      console.log(button)
+    }
     // console.log(this.state)
     switch (button) {
       case 'PC-PLAY':
@@ -56,9 +68,11 @@ class EditorComponent extends Component {
         this.props.updatePlayerSource(null);
         break;
       case 'PC-DIAL-BACK':
+        this.props.updatePlayerIsPlaying(false);
         this.props.updatePlayerJogStep(-0.1);
         break;
       case 'PC-DIAL-FORWARD':
+        this.props.updatePlayerIsPlaying(false);
         this.props.updatePlayerJogStep(0.1);
         break;
       case 'EC-TRIM-MINUS':
@@ -131,8 +145,18 @@ class EditorComponent extends Component {
         }
         break;
       case 'EC-RECORDER-IN':
+        if (this.state.entry === 'ri'){
+          this.setState({entry: 'none'})
+        } else {
+          this.setState({entry: 'ri'})
+        }
         break;
       case 'EC-RECORDER-OUT':
+        if (this.state.entry === 'ro'){
+          this.setState({entry: 'none'})
+        } else {
+          this.setState({entry: 'ro'})
+        }
         break;
       case 'EC-ENTRY':
         this.setState({entry: 'none'})
@@ -144,8 +168,10 @@ class EditorComponent extends Component {
             this.setState({po: this.props.ptime})
             break;
           case 'ri':
+            this.setState({ri: this.props.rtime})
             break;
           case 'ro':
+            this.setState({ro: this.props.rtime})
             break;
         }
         break;
@@ -169,6 +195,36 @@ class EditorComponent extends Component {
         }
         break;
       case 'EC-AUTO-EDIT':
+        this.props.updateRecorderIsPlaying(false);
+        this.props.updateRecorderJogStep(0);
+        if (this.state.pi !== null, this.state.po !== null){
+          if (this.props.rSources.length === 0){
+            const dTime = this.state.po - this.state.pi;
+            // console.log('pS: ', this.props.pSource);
+            let clip = {
+              sourceURL: this.props.pSource,
+              streamURL: this.props.pStream,
+              playerIN: this.state.pi,
+              playerOUT: this.state.po,
+              recorderIN: 0,
+              recorderOUT: dTime,
+            }
+            this.props.addRecorderSource(new Clip(clip))
+          }
+          else if (this.state.ri !== null){
+            const dTime = this.state.po - this.state.pi;
+            // console.log('pS: ', this.props.pSource);
+            let clip = {
+              sourceURL: this.props.pSource,
+              streamURL: this.props.pStream,
+              playerIN: this.state.pi,
+              playerOUT: this.state.po,
+              recorderIN: this.state.ri,
+              recorderOUT: this.state.ri + dTime,
+            }
+            this.props.addRecorderSource(new Clip(clip))
+          }
+        }
         break;
       case 'RC-PLAY':
         this.props.updateRecorderIsPlaying(true);
@@ -181,7 +237,7 @@ class EditorComponent extends Component {
         break;
       case 'RC-REWIND':
         this.props.updateRecorderIsPlaying(true);
-        this.props.updateRecorderPlayRate(-4);
+        this.props.updateRecorderPlayRate(-1);
         break;
       case 'RC-FASTFORWARD':
         this.props.updateRecorderIsPlaying(true);
@@ -194,9 +250,11 @@ class EditorComponent extends Component {
         console.log('RC EXPORT NOT BUILD');
         break;
       case 'RC-DIAL-BACK':
+        this.props.updateRecorderIsPlaying(false);
         this.props.updateRecorderJogStep(-0.1);
         break;
       case 'RC-DIAL-FORWARD':
+        this.props.updateRecorderIsPlaying(false);
         this.props.updateRecorderJogStep(0.1);
         break;
       default:
@@ -290,8 +348,8 @@ class EditorComponent extends Component {
     <div id="recorder">
       <p>RECORDER</p>
       <div className="row right-justify">
-        <b className="light">IN</b>
-        <b className="light">OUT</b>
+        {this.state.entry === 'ri' ? <b className="light on">IN</b> : <b className={this.state.ri != null ? "light lock" : "light"}>IN</b>}
+        {this.state.entry === 'ro' ? <b className="light on">OUT</b> : <b className={this.state.ro != null ? "light lock" : "light"}>OUT</b>}
       </div>
       <RecorderClock />
       <div className="center-div">
