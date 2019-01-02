@@ -9,23 +9,26 @@ import GalleryPage from './GalleryPage';
 import LoginPage from './LoginPage';
 import WelcomePage from './WelcomePage';
 import ProfilePage from './ProfilePage';
-import PageContainer from './PageContainer';
 
 
-
-class App extends Component {
+class PageContainer extends Component {
 
   // NEW RENDER
   render(){
     return(
       <>
+      <NavBar />
       <Switch>
+        <Route exact path='/editor' component={EditPage} />
+        <Route exact path='/gallery' component={GalleryPage} />
         <Route exact path='/login' component={LoginPage} />
-        <Route path='/' component={PageContainer} />
+        <Route exact path='/profile' component={ProfilePage} />
+
+        <Route path='/' component={WelcomePage} />
       </Switch>
       </>
     )
   }
 }
 
-export default App;
+export default PageContainer;

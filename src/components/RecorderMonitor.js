@@ -311,7 +311,7 @@ class RecorderMonitor extends Component {
             else if (clip.recorderIN < newClip.recorderIN && clip.recorderOUT > newClip.recorderOUT){ // overwrite middle of clip
               const preClip = {
                 sourceURL: clip.sourceURL,
-                streamURL: clip.sourceURL,
+                streamURL: clip.streamURL,
                 playerIN: clip.playerIN,
                 playerOUT: (clip.playerIN + (newClip.recorderIN - clip.recorderIN)),
                 recorderIN: clip.recorderIN,
@@ -319,7 +319,7 @@ class RecorderMonitor extends Component {
               }
               const postClip = {
                 sourceURL: clip.sourceURL,
-                streamURL: clip.sourceURL,
+                streamURL: clip.streamURL,
                 playerIN: (clip.playerOUT - (clip.recorderOUT - newClip.recorderOUT)),
                 playerOUT: clip.playerOUT,
                 recorderIN: newClip.recorderOUT,
@@ -331,7 +331,7 @@ class RecorderMonitor extends Component {
             else if (clip.recorderIN < newClip.recorderIN && clip.recorderOUT < newClip.recorderOUT){ // overwrite end of the clip
               const preClip = {
                 sourceURL: clip.sourceURL,
-                streamURL: clip.sourceURL,
+                streamURL: clip.streamURL,
                 playerIN: clip.playerIN,
                 playerOUT: (clip.playerIN + (newClip.recorderIN - clip.recorderIN)),
                 recorderIN: clip.recorderIN,
@@ -342,7 +342,7 @@ class RecorderMonitor extends Component {
             else if (clip.recorderIN > newClip.recorderIN && clip.recorderOUT > newClip.recorderOUT){ // overwrite start of the clip
               const postClip = {
                 sourceURL: clip.sourceURL,
-                streamURL: clip.sourceURL,
+                streamURL: clip.streamURL,
                 playerIN: (clip.playerOUT - (clip.recorderOUT - newClip.recorderOUT)),
                 playerOUT: clip.playerOUT,
                 recorderIN: newClip.recorderOUT,

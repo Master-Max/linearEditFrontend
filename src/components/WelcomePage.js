@@ -1,0 +1,12 @@
+import React from 'react'
+import '../assets/css/App.css';
+
+const MainPage = () => {
+  return (
+    <div className="App">
+      <h1>Welcome</h1>
+    </div>
+  )
+}
+
+export default MainPage
