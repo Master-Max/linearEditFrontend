@@ -1,9 +1,11 @@
 import { UPDATE_PLAYER_CLOCK } from './types';
 import { UPDATE_PLAYER_SOURCE, UPDATE_PLAYER_STREAM, UPDATE_PLAYER_ISPLAYING, UPDATE_PLAYER_PLAYRATE, UPDATE_PLAYER_JOGSTEP } from './types';
 import { UPDATE_RECORDER_CLOCK } from './types';
-import { ADD_RECORDER_SOURCE, UPDATE_RECORDER_SOURCE, UPDATE_RECORDER_ISLOADED, UPDATE_RECORDER_ISPLAYING, UPDATE_RECORDER_PLAYRATE, UPDATE_RECORDER_JOGSTEP, UPDATE_PREVIEW_CLIP } from './types';
+import { UPDATE_CLIPSJSON, ADD_RECORDER_SOURCE, UPDATE_RECORDER_SOURCE, UPDATE_RECORDER_ISLOADED, UPDATE_RECORDER_ISPLAYING, UPDATE_RECORDER_PLAYRATE, UPDATE_RECORDER_JOGSTEP, UPDATE_PREVIEW_CLIP } from './types';
+import { UPDATE_USER } from './types';
 // import * from './types';
 import VideoAdapter from '../apis/VideoAdapter';
+import UserAdapter from '../apis/UserAdapter';
 
 // PLAYER ACTIONS
 export function updatePlayerClock( time ){
@@ -91,9 +93,15 @@ export function updatePreviewClip( clip ){
     payload: clip
   }
 }
+export function updateClipsJson( clips ){
+  return {
+    type: UPDATE_CLIPSJSON,
+    payload: clips
+  }
+}
 
 /// API actions
-export function postVideo(url){ // May Need to rename this
+export function postVideo( url ){ // May Need to rename this
   return (dispatch) => {
     console.log('postVideo')
     dispatch(updatePlayerSource(url))
@@ -113,8 +121,30 @@ export function postVideo(url){ // May Need to rename this
     }
   }
 }
-export function assembleVideo(){
+export function createUser( username, password ){
+  return (dispatch) => {
+    console.log('createUser')
+    dispatch({type: 'CREATING_USER'})
+    UserAdapter.createUser(username, password)
+    .then(user => {
+      // console.log('Response: ', user);
+      // console.log(user.username)
+      // if(user.username[0] === "has already been taken"){
+      //   dispatch(updateUser({username: user.username[0]}))
+      // }else{
+      //   dispatch(updateUser(user))
+      // }
+      dispatch(updateUser(user))
+      dispatch({type: 'CREATED_USER'})
+    })
+  }
 
+}
+export function updateUser( user ){
+  return {
+    type: UPDATE_USER,
+    payload: user
+  }
 }
 
 // TODO:

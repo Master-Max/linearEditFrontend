@@ -5,7 +5,8 @@ import {
   UPDATE_RECORDER_ISPLAYING,
   UPDATE_RECORDER_PLAYRATE,
   UPDATE_RECORDER_JOGSTEP,
-  UPDATE_PREVIEW_CLIP
+  UPDATE_PREVIEW_CLIP,
+  UPDATE_CLIPSJSON,
 } from '../actions/types';
 
 // Sources will have video objects in it, structured like this:
@@ -31,6 +32,7 @@ const initialState = {
   playRate: 1,
   stepCount: 0,
   stepRate: 0,
+  clipsJson: null,
 }
 
 export default function recorderReducer(state = initialState, action) {
@@ -56,6 +58,8 @@ export default function recorderReducer(state = initialState, action) {
       return {...state, stepCount: state.stepCount + 1, stepRate: action.payload}
     case UPDATE_PREVIEW_CLIP:
       return {...state, previewClip: action.payload}
+    case UPDATE_CLIPSJSON:
+      return {...state, clipsJson: action.payload}
     default:
       return state;
   }

@@ -247,7 +247,20 @@ class EditorComponent extends Component {
         console.log('RC RECORD NOT BUILD');
         break;
       case 'RC-EXPORT':
-        console.log('RC EXPORT NOT BUILD');
+        const name = prompt('Name Your Project:')
+        fetch('http://localhost:4000/api/v1/projects', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            user_id: this.props.user_id,
+            clips: this.props.clipsJson
+          })
+        })
+        .then(r=>r.json())
+        .then(data => console.log(data))
         break;
       case 'RC-DIAL-BACK':
         this.props.updateRecorderIsPlaying(false);
@@ -393,11 +406,13 @@ class EditorComponent extends Component {
 
 function mapStateToProps(state) {
   return {
+    user_id: state.user.id,
     ptime: state.playerClock.time,
     pSource: state.player.source,
     pStream: state.player.stream,
     rtime: state.recorderClock.time,
     rSources: state.recorder.sources,
+    clipsJson: state.recorder.clipsJson,
   }
 }
 
