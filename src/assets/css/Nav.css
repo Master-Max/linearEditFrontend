@@ -1,5 +1,9 @@
 .NavBar{
-
+  background-color: #a04949;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px -20px 100px;
 }
 
 ul {
@@ -7,11 +11,13 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: blue;
+  width: 100%;
 }
 
 li {
+  display: inline-block;
   float: left;
+  align-self: center;
 }
 
 li a{
@@ -20,4 +26,9 @@ li a{
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+}
+
+.right{
+  display: block;
+  float: right;
 }

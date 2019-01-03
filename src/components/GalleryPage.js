@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-
+import '../assets/css/Gallery.css';
 
 class GalleryPage extends Component {
   constructor(props){
@@ -41,10 +41,10 @@ class GalleryPage extends Component {
 
   render(){
     return (
-      <>
-      <h2>Gallery</h2>
-      {this.renderMovies()}
-      </>
+      <div className="gallery">
+        <h2>Gallery</h2>
+        {this.renderMovies()}
+      </div>
     )
   }
 
