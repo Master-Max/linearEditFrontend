@@ -1,4 +1,4 @@
-const VID_URL = "http://localhost:4000/api/v1/videos"
+const VID_URL = "http://69.119.240.38:4000/api/v1/videos"
 
 export default class VideoAdapter {
   static postVideo(url) {

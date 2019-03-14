@@ -1,4 +1,4 @@
-const USER_URL = "http://localhost:4000/api/v1/users"
+const USER_URL = "http://69.119.240.38:4000/api/v1/users"
 
 export default class UserAdapter{
   static createUser(username, password) {
