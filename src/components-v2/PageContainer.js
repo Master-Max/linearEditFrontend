@@ -4,28 +4,26 @@ import { Route, Switch } from 'react-router-dom'
 
 // import '../assets/css/App.css';
 import NavBar from './NavBar';
-import EditPage from './EditPage';
+import EditPage from '../components/EditPage';
 import GalleryPage from './GalleryPage';
-import LoginPage from './LoginPage';
 import WelcomePage from './WelcomePage';
-import ProfilePage from './ProfilePage';
-import PageContainer from '../components-v2/PageContainer';
 
 
-
-class App extends Component {
+class PageContainer extends Component {
 
   // NEW RENDER
   render(){
     return(
       <>
+      <NavBar />
       <Switch>
-        <Route exact path='/login' component={LoginPage} />
-        <Route path='/' component={PageContainer} />
+        <Route exact path='/editor' component={EditPage} />
+        <Route exact path='/gallery' component={GalleryPage} />
+        <Route path='/' component={WelcomePage} />
       </Switch>
       </>
     )
   }
 }
 
-export default App;
+export default PageContainer;
